@@ -1,0 +1,70 @@
+# {{ project_name }}
+
+{{ description }}
+
+# Setup Instructions:
+**Clone the repository:**
+```bash
+git clone https://github.com/BUntulis/filesync.git
+cd filesync
+```
+
+**(Optional) Create and activate a virtual environment**
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+**Install dependencies:**
+```bash
+pip install -r requirements.txt
+```
+
+**Make the package executable (optional, for CLI usage)**
+```bash
+pip install -e .
+```
+
+**Run synchronization**
+```bash
+python -m filesync --source ./path_source/ --backup ./path_backup/ --versioning ./path_versioning/
+```
+
+# Code Documentation:
+{% for mod in modules %}
+
+# {{ mod.path }}
+{{ mod.doc }}
+
+{% for cls in mod.classes %}
+
+## Class: {{ cls.name }}{% if cls.is_api_view %} (APIView) {% endif %}
+{{ cls.doc }}
+
+{% if cls.methods %}
+
+### Methods:
+{% for m in cls.methods %}
+
+### {{ m.name }}(): 
+{{ m.doc }}
+
+
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+
+{% if mod.functions %}
+
+## Functions:
+{% for func in mod.functions %}
+
+### {{ func.name }}(): 
+{{ func.doc }}
+
+
+{% endfor %}
+{% endif %}
+
+{% endfor %}
