@@ -27,7 +27,7 @@ pip install -e .
 
 **Run synchronization**
 ```bash
-python -m filesync.sync --source ./path_source/ --backup ./path_backup/ --versioning ./path_versioning/
+filesync --source ./path_source/ --backup ./path_backup/ --versioning ./path_versioning/
 ```
 
 # Code Documentation:
