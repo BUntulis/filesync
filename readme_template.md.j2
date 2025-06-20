@@ -3,9 +3,22 @@
 {{ description }}
 
 # Setup Instructions:
+
+## Option 1: Install from PyPI (recommended)
+
+```bash
+pip install benas-filesync
+
+**Run synchronization**
+```bash
+filesync --source ./path_source/ --backup ./path_backup/ --versioning ./path_versioning/
+```
+
+
+## Option  2: Install from source (development mode)
 **Clone the repository:**
 ```bash
-git clone https://github.com/BUntulis/filesync.git
+git clone https://github.com/BUntulis/filesync
 cd filesync
 ```
 
@@ -27,7 +40,7 @@ pip install -e .
 
 **Run synchronization**
 ```bash
-python -m filesync --source ./path_source/ --backup ./path_backup/ --versioning ./path_versioning/
+filesync --source ./path_source/ --backup ./path_backup/ --versioning ./path_versioning/
 ```
 
 # Code Documentation:

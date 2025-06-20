@@ -10,7 +10,7 @@ import os
 import shutil
 import tempfile
 from datetime import datetime, timedelta
-from filesync.manager import FileSyncManager
+from benas_filesync.manager import FileSyncManager
 
 
 class TestFileSyncManager(unittest.TestCase):
