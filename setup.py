@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='benas_filesync',
-    version='1.0.3',
+    version='1.0.4',
     description='File synchronization script with backup and versioning',
     long_description=open("README.md", "r", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
