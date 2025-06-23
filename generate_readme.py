@@ -12,7 +12,7 @@ from jinja2 import Template
 BASE_DIR = Path(__file__).resolve().parent
 TEMPLATE_PATH = BASE_DIR / "readme_template.md.j2"
 
-def extract_doc_info(py_path):
+def extract_doc_info(py_path: Path) -> dict:
     """
     Parses a Python file and extracts all doc-related content for documentation purposes.
 
@@ -71,7 +71,7 @@ def extract_doc_info(py_path):
         "functions": functions,
     }
 
-def get_structure(path, prefix=""):
+def get_structure(path: str, prefix: str = "") -> str:
     """
     Builds a visual (text-based) tree of the project's folder structure.
 
@@ -97,7 +97,7 @@ def get_structure(path, prefix=""):
             tree += f"{prefix}{item}\n"
     return tree
 
-def gather_all_docs():
+def gather_all_docs() -> list[dict]:
     """
     Walks through the entire project directory and processes all .py files
     (excluding itself), collecting structured documentation info.
@@ -118,7 +118,7 @@ def gather_all_docs():
                     docs.append(info)
     return docs
 
-def generate_readme():
+def generate_readme() -> None:
     """
     Generates the README.md file using a Jinja2 template and dynamic project metadata.
 
