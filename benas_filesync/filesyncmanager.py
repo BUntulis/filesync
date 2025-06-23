@@ -143,9 +143,10 @@ class FileSyncManager:
         try:
             if not os.path.isfile(filepath):
                 raise ValueError(f"Path is not a file: {filepath}")
-            hasher = hashlib.sha256()
+            hasher = hashlib.sha256() # If want faster option use blake3, but sha256 is more safe. So depends on your needs.
             with open(filepath, 'rb') as f:
-                hasher.update(f.read())
+                for chunk in iter(lambda: f.read(8192), b''): # Read file in chunks, 8192 bytes at a time, better for large files
+                    hasher.update(chunk)
             return hasher.hexdigest()
         except Exception as e:
             raise RuntimeError(f"Error hashing file {filepath}: {e}")
