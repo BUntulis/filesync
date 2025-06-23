@@ -108,8 +108,10 @@ class FileSyncManager:
         try:
             if not os.path.isdir(self.source):
                 raise ValueError(f"Provided source path is not a directory: {self.source}")
+            
             return [f for f in os.listdir(self.source)
                     if f.endswith('.txt') and os.path.isfile(os.path.join(self.source, f))]
+        
         except Exception as e:
             raise RuntimeError(f"Error reading .txt files from {self.source}: {e}")
 
@@ -143,11 +145,15 @@ class FileSyncManager:
         try:
             if not os.path.isfile(filepath):
                 raise ValueError(f"Path is not a file: {filepath}")
+            
             hasher = hashlib.sha256() # If want faster option use blake3, but sha256 is more safe. So depends on your needs.
+
             with open(filepath, 'rb') as f:
                 for chunk in iter(lambda: f.read(8192), b''): # Read file in chunks, 8192 bytes at a time, better for large files
                     hasher.update(chunk)
+
             return hasher.hexdigest()
+        
         except Exception as e:
             raise RuntimeError(f"Error hashing file {filepath}: {e}")
 
@@ -182,11 +188,15 @@ class FileSyncManager:
         try:
             if not os.path.exists(source_path):
                 raise FileNotFoundError(f"Source file not found: {source_path}")
+            
             if not os.path.isfile(source_path):
                 raise ValueError(f"Source path is not a file: {source_path}")
+            
             if not os.path.exists(backup_path):
                 return True
+            
             return self.hash_file(source_path) != self.hash_file(backup_path)
+        
         except Exception as e:
             raise RuntimeError(f"Error comparing files:\n  {source_path}\n  {backup_path}\nDetails: {e}")
 
@@ -240,22 +250,26 @@ class FileSyncManager:
                         mtime = os.path.getmtime(source_path)
                     except Exception as e:
                         raise RuntimeError(f"Error getting modification time for {source_path}: {e}")
+                
                     minutes_ago = (datetime.now().timestamp() - mtime) / 60
                     if minutes_ago > self.modified_within:
                         continue
 
                 if not os.path.exists(backup_path):
                     self.logger.info(f"Copying new file: {filename}")
+
                     if not self.dry_run:
                         try:
                             shutil.copy2(source_path, backup_path)
                         except Exception as e:
                             raise RuntimeError(f"Error copying file {source_path} to {backup_path}: {e}")
+                        
                 elif self.should_sync(source_path, backup_path):
                     timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
                     versioned_name = f"{os.path.splitext(filename)[0]}_{timestamp}.txt"
                     versioned_path = os.path.join(self.versioning, versioned_name)
                     self.logger.info(f"Versioning: {filename} → {versioned_name}")
+
                     if not self.dry_run:
                         try:
                             shutil.move(backup_path, versioned_path)
@@ -264,5 +278,6 @@ class FileSyncManager:
                             raise RuntimeError(f"Error during versioning of {filename}: {e}")
                 else:
                     self.logger.info(f"Skipped (unchanged): {filename}")
+
         except Exception as e:
             raise RuntimeError(f"Synchronization failed: {e}")
