@@ -111,7 +111,7 @@ class FileSyncManager:
             
             return [f for f in os.listdir(self.source)
                     if f.endswith('.txt') and os.path.isfile(os.path.join(self.source, f))]
-        
+            
         except Exception as e:
             raise RuntimeError(f"Error reading .txt files from {self.source}: {e}")
 
@@ -193,9 +193,9 @@ class FileSyncManager:
                 raise ValueError(f"Source path is not a file: {source_path}")
             
             if not os.path.exists(backup_path):
-                return True
+                return True # If backup file does not exist, we need to sync it
             
-            return self.hash_file(source_path) != self.hash_file(backup_path)
+            return self.hash_file(source_path) != self.hash_file(backup_path) # Compare hashes to determine if files different
         
         except Exception as e:
             raise RuntimeError(f"Error comparing files:\n  {source_path}\n  {backup_path}\nDetails: {e}")
@@ -238,13 +238,16 @@ class FileSyncManager:
         '''
 
         try:
+            # Ensure source, backup, and versioning directories exist
             os.makedirs(self.backup, exist_ok=True)
             os.makedirs(self.versioning, exist_ok=True)
 
             for filename in self.get_txt_files():
+                # Construct full paths for source and backup files
                 source_path = os.path.join(self.source, filename)
                 backup_path = os.path.join(self.backup, filename)
 
+                # Check if the file was modified within the specified time frame
                 if self.modified_within:
                     try:
                         mtime = os.path.getmtime(source_path)
@@ -253,27 +256,31 @@ class FileSyncManager:
                 
                     minutes_ago = (datetime.now().timestamp() - mtime) / 60
                     if minutes_ago > self.modified_within:
-                        continue
+                        continue # Skip files not modified within the specified time frame
 
+                # Check if the file exists in the backup directory
                 if not os.path.exists(backup_path):
                     self.logger.info(f"Copying new file: {filename}")
 
+                    # Copy the file from source to backup
                     if not self.dry_run:
                         try:
                             shutil.copy2(source_path, backup_path)
                         except Exception as e:
                             raise RuntimeError(f"Error copying file {source_path} to {backup_path}: {e}")
                         
+                # If the file exists in the backup directory, check if it needs to be synchronized        
                 elif self.should_sync(source_path, backup_path):
                     timestamp = datetime.now().strftime('%Y%m%dT%H%M%S')
                     versioned_name = f"{os.path.splitext(filename)[0]}_{timestamp}.txt"
                     versioned_path = os.path.join(self.versioning, versioned_name)
                     self.logger.info(f"Versioning: {filename} → {versioned_name}")
 
+                    # Move the existing backup file to versioning directory
                     if not self.dry_run:
                         try:
-                            shutil.move(backup_path, versioned_path)
-                            shutil.copy2(source_path, backup_path)
+                            shutil.move(backup_path, versioned_path) # Move instead of copy to avoid duplicates
+                            shutil.copy2(source_path, backup_path) # Copy the new version to backup
                         except Exception as e:
                             raise RuntimeError(f"Error during versioning of {filename}: {e}")
                 else:
