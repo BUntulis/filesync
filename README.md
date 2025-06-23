@@ -57,89 +57,7 @@ filesync --source ./path_source/ --backup ./path_backup/ --versioning ./path_ver
 
 
 
-# benas_filesync\cli.py
-@author: Benas Untulis
-@description:
-- Command-line interface for the file synchronization script.
-
-
-
-
-
-## Functions:
-
-
-### parse_args(): 
-**Purpose:**
-- Parse command-line arguments for the file synchronization script.
-
-**Returns:**
-- ``argparse.Namespace``: The parsed command-line arguments.
-
-**Example:**
-```python
->>> args = parse_args()
->>> print(args.source)
-```
-Example Output:
-- /path/to/source
-
-```python
->>> print(args.backup)
-```
-Example Output:            
-- /path/to/backup
-
-```python
->>> print(args.versioning)
-```
-Example Output:
-- /path/to/versioning
-
-**Raises:**
-- ``SystemExit``: If the required arguments are not provided or if the arguments are invalid
-
-
-
-
-
-
-
-# benas_filesync\main.py
-@description: Entry point for the filesync package.
-
-
-
-
-
-## Functions:
-
-
-### setup_logging(): 
-
-
-
-
-
-### main(): 
-**Purpose:** 
-- Main function to execute the file synchronization script.
-This function parses command-line arguments, sets up logging, and calls the `sync_files` function
-with the provided arguments. It handles exceptions and logs errors if the script fails.
-
-**Raises:**
-- ``SystemExit``: If the script encounters an error during execution.
-- ``ValueError``: If the provided paths are not valid directories.
-- ``RuntimeError``: If there are issues with file operations (e.g., copying, moving, hashing).
-- ``PermissionError``: If there are insufficient permissions to read/write files.
-
-
-
-
-
-
-
-# benas_filesync\manager.py
+# benas_filesync\filesyncmanager.py
 @author: Benas Untulis
 @description:
 - FileSyncManager class for managing file synchronization between source, backup, and versioning directories.
@@ -338,8 +256,112 @@ Example Output:
 
 
 
+# benas_filesync\main.py
+@description: Entry point for the filesync package.
+
+
+
+
+
+## Functions:
+
+
+### main(): 
+**Purpose:** 
+- Main function to execute the file synchronization script.
+This function parses command-line arguments, sets up logging, and calls the `sync_files` function
+with the provided arguments. It handles exceptions and logs errors if the script fails.
+
+**Raises:**
+- ``SystemExit``: If the script encounters an error during execution.
+- ``ValueError``: If the provided paths are not valid directories.
+- ``RuntimeError``: If there are issues with file operations (e.g., copying, moving, hashing).
+- ``PermissionError``: If there are insufficient permissions to read/write files.
+
+
+
+
+
+
+
 # benas_filesync\__init__.py
 @description: This module is main entry point for the filesync package.
+
+
+
+
+
+
+
+# benas_filesync\utils\cli_utils.py
+@author: Benas Untulis
+@description:
+- Command-line interface for the file synchronization script.
+
+
+
+
+
+## Functions:
+
+
+### parse_args(): 
+**Purpose:**
+- Parse command-line arguments for the file synchronization script.
+
+**Returns:**
+- ``argparse.Namespace``: The parsed command-line arguments.
+
+**Example:**
+```python
+>>> args = parse_args()
+>>> print(args.source)
+```
+Example Output:
+- /path/to/source
+
+```python
+>>> print(args.backup)
+```
+Example Output:            
+- /path/to/backup
+
+```python
+>>> print(args.versioning)
+```
+Example Output:
+- /path/to/versioning
+
+**Raises:**
+- ``SystemExit``: If the required arguments are not provided or if the arguments are invalid
+
+
+
+
+
+
+
+# benas_filesync\utils\logging_utils.py
+
+
+
+
+
+
+## Functions:
+
+
+### setup_logging(): 
+**Purpose:** 
+- Configures logging for the script based on the specified log type and file.
+
+**Parameters:**
+- `log_type` (str): Specifies the type of logging to use. Options are 'none', 'console', 'file', or 'both'.
+- `log_file` (str): The file path where logs will be written if `log_type` is 'file' or 'both'.
+
+**Raises:**
+- `ValueError`: If `log_type` is not one of the expected values
+- `OSError`: If file handler creation fails (e.g., due to permission issues or invalid path)
 
 
 
