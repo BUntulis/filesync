@@ -76,7 +76,7 @@ class FileSyncManager:
         self.modified_within = modified_within
         self.logger = logging.getLogger(__name__)
 
-    def get_txt_files(self):
+    def get_txt_files(self) -> list:
         '''
         **Purpose:** 
         - Retrieve all .txt files from the specified directory.
@@ -117,7 +117,7 @@ class FileSyncManager:
 
 
     @staticmethod
-    def hash_file(filepath):
+    def hash_file(filepath) -> str:
         '''
         **Purpose:** 
         - Compute the SHA-256 hash of a file to determine if it has changed.
@@ -158,7 +158,7 @@ class FileSyncManager:
             raise RuntimeError(f"Error hashing file {filepath}: {e}")
 
 
-    def should_sync(self, source_path, backup_path):
+    def should_sync(self, source_path, backup_path) -> bool:
         '''
         **Purpose:** 
         - Determine if a file should be synchronized between source and backup locations.
@@ -200,7 +200,7 @@ class FileSyncManager:
         except Exception as e:
             raise RuntimeError(f"Error comparing files:\n  {source_path}\n  {backup_path}\nDetails: {e}")
 
-    def sync(self):
+    def sync(self) -> None:
         '''
         **Purpose:** 
         - Synchronize .txt files from the source directory to the backup directory and manage versioning.
