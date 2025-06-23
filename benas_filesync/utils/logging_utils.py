@@ -1,6 +1,6 @@
 import logging
 
-def setup_logging(log_type, log_file) -> None:
+def setup_logging(log_type: str, log_file: str) -> None:
     '''
     **Purpose:** 
     - Configures logging for the script based on the specified log type and file.
