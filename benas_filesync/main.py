@@ -5,6 +5,7 @@
 from .filesyncmanager import FileSyncManager
 import benas_filesync.cli as cli
 import logging
+import os
 
 def setup_logging(log_type, log_file):
     if log_type == 'none':
