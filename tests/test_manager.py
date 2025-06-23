@@ -18,7 +18,7 @@ class TestFileSyncManager(unittest.TestCase):
     Test suite for ``FileSyncManager`` class.
     '''
 
-    def setUp(self):
+    def setUp(self) -> None:
         '''
         **Purpose:**
         - Setup temporary directories for source, backup, and versioning before each test.
@@ -38,7 +38,7 @@ class TestFileSyncManager(unittest.TestCase):
             modified_within=None
         )
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         '''
         **Purpose:** 
         - Cleanup temporary directories after each test.
@@ -50,7 +50,7 @@ class TestFileSyncManager(unittest.TestCase):
         shutil.rmtree(self.backup_dir)
         shutil.rmtree(self.versioning_dir)
 
-    def create_file(self, dir_path, filename, content):
+    def create_file(self, dir_path: str, filename: str, content: str) -> str:
         '''
         **Purpose:** 
         - Helper method to create a file with specified content.
@@ -68,7 +68,7 @@ class TestFileSyncManager(unittest.TestCase):
             f.write(content)
         return path
 
-    def test_copy_new_file(self):
+    def test_copy_new_file(self) -> None:
         '''
         **Purpose:** 
         - Test that a new file in source is copied to backup if it doesn't exist there.
@@ -85,7 +85,7 @@ class TestFileSyncManager(unittest.TestCase):
         backup_files = os.listdir(self.backup_dir)
         self.assertIn('test1.txt', backup_files)
 
-    def test_skip_unchanged_file(self):
+    def test_skip_unchanged_file(self) -> None:
         '''
         **Purpose:** 
         - Test that unchanged files are skipped (not copied or versioned).
@@ -107,7 +107,7 @@ class TestFileSyncManager(unittest.TestCase):
         versioning_files = os.listdir(self.versioning_dir)
         self.assertEqual(len(versioning_files), 0)
 
-    def test_versioning_on_change(self):
+    def test_versioning_on_change(self) -> None:
         '''
         **Purpose:** 
         - Test that when a file is changed, the old backup is moved to versioning and source is copied to backup.
@@ -132,7 +132,7 @@ class TestFileSyncManager(unittest.TestCase):
         self.assertEqual(len(versioning_files), 1)
         self.assertTrue(versioning_files[0].startswith('test3_') and versioning_files[0].endswith('.txt'))
 
-    def test_modified_within_filter(self):
+    def test_modified_within_filter(self) -> None:
         '''
         **Purpose:** 
         - Test that files modified outside the 'modified_within' window are skipped.
