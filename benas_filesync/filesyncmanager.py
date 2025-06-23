@@ -56,7 +56,7 @@ class FileSyncManager:
     - ``False`` # If the files are identical
     '''
 
-    def __init__(self, source, backup, versioning, dry_run=False, modified_within=None):
+    def __init__(self, source: str, backup: str, versioning: str, dry_run: bool = False, modified_within: int = None):
         '''
         **Purpose:** 
         - Initialize the FileSyncManager with source, backup, and versioning directories.
@@ -117,7 +117,7 @@ class FileSyncManager:
 
 
     @staticmethod
-    def hash_file(filepath) -> str:
+    def hash_file(filepath: str) -> str:
         '''
         **Purpose:** 
         - Compute the SHA-256 hash of a file to determine if it has changed.
@@ -158,7 +158,7 @@ class FileSyncManager:
             raise RuntimeError(f"Error hashing file {filepath}: {e}")
 
 
-    def should_sync(self, source_path, backup_path) -> bool:
+    def should_sync(self, source_path: str, backup_path: str) -> bool:
         '''
         **Purpose:** 
         - Determine if a file should be synchronized between source and backup locations.
