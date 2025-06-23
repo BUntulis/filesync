@@ -7,7 +7,7 @@ from .utils.cli_utils import parse_args
 import os
 
 
-def main():
+def main() -> None:
     '''
     **Purpose:** 
     - Main function to execute the file synchronization script.
