@@ -6,7 +6,7 @@
 
 import argparse
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     '''
     **Purpose:**
     - Parse command-line arguments for the file synchronization script.
