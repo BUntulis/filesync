@@ -2,7 +2,7 @@
 @description: Entry point for the filesync package.
 '''
 
-from .manager import FileSyncManager
+from .filesyncmanager import FileSyncManager
 import benas_filesync.cli as cli
 import logging
 
